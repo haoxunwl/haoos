@@ -1,0 +1,230 @@
+#haoos server版shell命令大全：
+help [cmd]        查看帮助，指定cmd查看单条命令帮助
+echo <msg>        控制台输出文本
+clear             清屏
+about             系统简介
+time              显示当前时间
+date              显示当前日期
+cal [m] [y]       查看日历（可选月份、年份）
+color             修改终端配色
+log               查看内核日志
+history [clear]   查看/清空命令历史
+install           启动系统安装程序
+which <cmd>       查找命令所在位置
+source <file>     执行脚本文件内命令
+gui / startx      启动图形桌面
+sysinfo           系统概览信息
+selftest          系统自检；selftest d 详细自检
+uptime            系统运行时长
+uname             内核系统信息
+reboot            重启系统
+shutdown          关机断电
+power             电源管理
+power profile <p> 设置电源策略
+sleep [s]         进入待机S1/S3
+hibernate         休眠S4
+runlevel          查看运行级别；runlevel set N 修改运行级别(0~6)
+### CPU/总线/时钟
+cpuinfo           CPU全量信息（全核心）
+smpinfo           SMP多核架构信息
+apicinfo          APIC/x2APIC状态
+msrinfo           读取MSR寄存器
+tsctest           TSC时钟校准测试
+hpetinfo          HPET硬件时钟信息
+acpiinfo          ACPI数据表
+smbios            整机硬件信息
+memmap            E820物理内存布局
+simdinfo          SSE/AVX指令集支持
+topoinfo          CPU拓扑架构
+cacheinfo         CPU各级缓存详情
+
+### 存储硬件
+lspci             枚举PCI硬件设备
+ideinfo           IDE硬盘信息
+diskinfo          磁盘总体信息
+diskpart <n>      查看指定磁盘分区
+smartctl          磁盘SMART健康数据
+healthchk         磁盘健康自检
+raid              RAID阵列管理
+hotspare          热备磁盘管理
+readsec <n>       读取磁盘指定扇区
+floppy            软驱信息；fdread <n> 读取软盘扇区
+cdrom             光驱信息：所在位置（IDE 四位置或 AHCI 端口）、型号、容量、卷标
+cdlist [路径]     列出光盘目录内容
+cdread <f> [偏移] [长度]  读取光盘文件（十六进制+ASCII转储）
+
+### 温控/固件/USB/显示
+thermal           硬件温度监控
+fanspeed <d> [s] 风扇转速调节
+uefi              UEFI启动信息
+efivars           管理EFI环境变量
+bootmenu          调出启动引导菜单
+uefifb            UEFI帧缓冲测试
+gfx               VGA图形模式测试
+mouse             PS/2鼠标状态
+audio             音频硬件测试
+usb               USB设备枚举；usb info 控制器与设备总览
+lsusb             列出USB设备（地址/VID:PID/类型/速率）
+usb dev <n>       查看指定USB设备的全部描述符
+usb hid           USB键盘状态与计数（输入诊断）
+usb rescan        重新枚举USB总线（热插拔后使用）
+tty               虚拟终端状态；tty switch n 切换终端
+free              内存使用概况
+slabinfo          Slab内存分配统计
+pagefault         缺页异常统计
+insmod <f|n> [p=v] 加载可重定位 ELF64 内核模块，可在 init 前设置参数（如 insmod hello count=3 who=HaoOS）
+rmmod <n>         卸载已加载的内核模块（被其它模块依赖或被引用时拒绝卸载）
+lsmod             列出模块：Users=依赖者+引用计数，Exports=向其它模块导出的符号数
+modinfo <n>       查看单个内核模块的版本、作者、来源、导出符号、签名与使用者
+modpolicy [s|p]   查看/切换模块签名策略：strict（默认，拒绝未签名）或 permissive
+guard             内存保护区域信息
+runq              调度运行队列状态
+schedstat         调度器运行统计
+syncinfo          同步原语统计
+
+### 进程/线程
+ps                进程列表
+pstree            树形进程视图
+procinfo <pid>    指定进程详情
+kill <pid> <sig>  给PID发送信号
+killall <name> [sig] 按进程名批量杀进程
+threads           线程列表；threadinfo <tid>单线程详情
+forkdemo          fork创建进程演示
+thdemo / threads  多线程示例
+renice <p> <pid>  修改进程优先级
+cgroup            资源组：list/create/rm/mem/pids/cpu/oom/attach/show/kill
+seccomp <pid> ... 每进程系统调用过滤：status/strict/allow <nr>/deny <nr>
+ipconfig          网卡IP配置
+netstat           网络连接列表
+ping <ip>         连通性测试
+sockinfo          活跃套接字
+arpinfo           ARP缓存表
+netdev            网卡硬件列表
+
+### 服务开关
+sshstatus         SSH状态；sshd on/off启停SSH
+dhcp              DHCP客户端控制
+dns               DNS解析/刷新缓存
+telnet            Telnet服务开关
+rdp               RDP远程桌面开关
+dhcpd             DHCP服务端管控
+dnss              DNS服务端管控
+
+### 高级网络
+firewall          防火墙配置
+route             路由表
+nat               NAT规则管理
+ipv6              IPv6协议栈信息
+balance           负载均衡控制
+proxy             网关代理设置
+bridge            网桥配置
+tunnel            隧道/专线组网
+portmgr           端口占用管理
+netlog            网络日志
+audit             安全审计日志
+svc list          列出全部服务
+svc start <name>  启动服务
+svc stop <name>   停止服务
+svc restart <name>重启服务
+svc status <name> 查看服务状态
+smb               SMB共享服务控制
+nfs               NFS文件共享
+ftp               FTP服务
+iscsi             iSCSI存储目标
+httpd             HTTP网页服务
+ws                WebSocket服务
+ntp               NTP时间同步；ntp sync校时；ntp server on/off开启NTP服务端
+syslog            系统日志；syslog n查看最后N条；syslog clear清空日志
+dmesg [level]     内核日志(DEBUG/INFO/WARN/ERROR/CRIT/NET)
+cron list         查看定时任务
+cron add          新增定时任务
+cron del          删除定时任务
+groups            用户组列表
+acl               ACL权限资源
+whoami            当前登录用户
+who               在线登录用户
+login             用户登录
+logout            退出登录
+useradd           创建账号
+userdel           删除账号
+passwd            修改密码
+secinfo           整机安全状态
+secchk <s>        输入内容安全校验
+ipcs              通用IPC资源
+pipeinfo          管道列表；pipetest管道读写测试
+shminfo           共享内存段；shmtest共享内存测试
+signallist        系统信号清单
+sigpending        待处理信号
+sigtest           信号收发测试
+pwd                     查看当前目录
+cd [path]               切换目录
+ls [path] / ll / ls -l  目录浏览，ll带权限详情
+mkdir <d>               新建文件夹
+rmdir <d>               删除空文件夹
+touch <f>               创建空文件
+cat <f>                 查看文件内容
+rm <f>                  移入回收站；rm -f <f>强制删除
+cp <s> <d>              文件复制
+mv <s> <d>              文件移动/重命名
+tree [p] [d]            树形展示目录
+chmod <f> <p>           修改文件权限
+chown <uid>[:gid] <f>   修改文件归属用户组
+
+find <pat>              按名称搜索文件
+grep <t> [p]            文件内容关键词检索
+hexdump <f> [o] [n]    十六进制查看文件
+df                      磁盘剩余空间
+du [path] [depth]       目录占用空间
+stat <f|d>              文件/目录元数据
+sync                    刷写缓存到磁盘
+
+encrypt <s> <d> [k]     文件加密
+decrypt <s> <d> [k]     文件解密
+compress <s> <d> [algo] 压缩文件
+decomp <s> <d>          解压文件
+
+trash                   回收站列表；trash restore <i>恢复；trash empty清空回收站
+procfs                  浏览/proc伪文件系统
+devfs                   浏览/dev设备目录
+ramdisk                 内存盘信息
+fsinfo                  文件系统概览（含打开文件数与峰值）
+fdtest [n]              同时打开 n 个文件，验证打开文件对象不再有 16 个的固定上限（默认 32）
+ext2                    ext2挂载与浏览
+mount [dev] [path] [type] 挂载分区；mount umount <path>卸载
+wc <file>         统计行数、单词、字节
+head <f> [n]      查看文件前N行
+tail <f> [n]      查看末尾N行
+sort <file>       文件内容排序
+diff <f1> <f2>    对比两个文件差异
+nl <file>         内容行号标注
+tac <file>        内容倒序展示
+cut -d DELIM -f N <file> 按分隔符截取字段
+tr SET1 SET2 <file> 字符替换
+uniq [-c] [-d] <file> 去重/统计重复行
+alias / unalias   设置/删除命令别名
+export            设置环境变量
+env               查看全部环境变量
+hostname [n]      查看/修改主机名
+wait <secs>       延时等待指定秒数
+calc <expr>       简易数学运算
+base64 encode/decode <file> [out] Base64编解码
+checksum <file>   SHA256哈希校验
+strings <file> [min] 提取文件内可见字符串
+watch [-n SECS] <cmd> 周期重复执行命令
+seq [first][last][step] 生成数字序列
+yes [string]      循环输出字符串
+perf              整机性能统计；perf cnt性能计数器；perf sample采样
+bench             整机基准跑分
+stack             打印当前内核栈的符号化回溯（函数名+偏移）
+ksym <hex>        把内核/已加载模块地址解析为 函数名+偏移
+panic test        内核panic异常测试
+dftest            双重故障异常测试
+wdt on/off        启停硬件看门狗；wdt info看门狗状态
+syscalls          系统调用清单；syscalltest系统调用压力测试
+usermode          用户态状态与测试；userproc创建用户态进程
+piedemo           运行位置无关（ET_DYN/PIE）用户程序演示：随机加载基址 + RELATIVE 重定位
+monitor           资源监控；monitor start/stop/report启停/生成报告
+backup            备份任务管理；backup add/run/list/stats
+kvstore           内置键值库；set/get/del/dump/stats
+mail              邮件服务管控；smtp/pop3/queue/users配置
+
